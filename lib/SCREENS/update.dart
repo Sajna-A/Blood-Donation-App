@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class AddUser extends StatefulWidget {
-  const AddUser({super.key});
+class UpdateDonor extends StatefulWidget {
+  const UpdateDonor({super.key});
 
   @override
-  State<AddUser> createState() => _AdduserState();
+  State<UpdateDonor> createState() => _UpdateDonorState();
 }
 
-class _AdduserState extends State<AddUser> {
+class _UpdateDonorState extends State<UpdateDonor> {
   final BloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
   String? selectedGroup;
   final CollectionReference donor1 =
@@ -16,14 +16,6 @@ class _AdduserState extends State<AddUser> {
 
   TextEditingController DonorName = TextEditingController();
   TextEditingController DonorNumber = TextEditingController();
-  void addDonor() {
-    final data = {
-      'name': DonorName.text,
-      'phone': DonorNumber.text,
-      'group': selectedGroup
-    };
-    donor1.add(data);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +23,7 @@ class _AdduserState extends State<AddUser> {
       appBar: AppBar(
         title: Center(
             child: Text(
-          "Add Donors",
+          "Update Donors",
           style: TextStyle(fontWeight: FontWeight.bold),
         )),
         backgroundColor: Colors.red,
@@ -72,16 +64,13 @@ class _AdduserState extends State<AddUser> {
                   }),
             ),
             ElevatedButton(
-                onPressed: () {
-                  addDonor();
-                  Navigator.pop(context);
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                     shape: ContinuousRectangleBorder(),
                     minimumSize: Size(double.infinity, 50),
                     backgroundColor: Colors.red),
                 child: Text(
-                  "Submit",
+                  "Update",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,

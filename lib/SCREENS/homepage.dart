@@ -1,4 +1,5 @@
 import 'package:blood_donation/SCREENS/adduser.dart';
+import 'package:blood_donation/SCREENS/update.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,6 +39,86 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: StreamBuilder(
+        stream: donor1.orderBy('name').snapshots(),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                final DocumentSnapshot donorSnap = snapshot.data.docs[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                              color: const Color.fromARGB(255, 216, 213, 213),
+                              blurRadius: 10,
+                              spreadRadius: 15)
+                        ]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            child: CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 30,
+                              child: Text(
+                                donorSnap['group'],
+                                style: TextStyle(fontSize: 25),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              donorSnap['name'],
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              donorSnap['phone'].toString(),
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/update');
+                              },
+                              icon: Icon(Icons.edit),
+                              iconSize: 30,
+                              color: Colors.blue,
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.delete),
+                              iconSize: 30,
+                              color: Colors.red,
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 }
