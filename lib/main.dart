@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:blood_donation/SCREENS/Adduser.dart';
 import 'package:blood_donation/SCREENS/Update.dart';
 import 'package:blood_donation/SCREENS/homepage.dart';
+import 'package:blood_donation/SCREENS/sample.dart';
 import 'package:blood_donation/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,11 +26,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-  routes: {
-    '/':(context)=>HomePage(),
-    '/add':(context)=>AddUser(),
-    '/update':(context)=>UpdateDonor()
-  },
+      routes: {
+        // '/test': (context) => Test(),
+        '/': (context) => HomePage(),
+        '/add': (context) => AddUser(),
+        '/update': (context) => UpdateDonor(),
+      },
     );
   }
 }

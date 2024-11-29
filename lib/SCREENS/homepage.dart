@@ -1,4 +1,5 @@
 import 'package:blood_donation/SCREENS/adduser.dart';
+import 'package:blood_donation/SCREENS/sample.dart';
 import 'package:blood_donation/SCREENS/update.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final CollectionReference donor1 =
       FirebaseFirestore.instance.collection('donor');
+  void DeleteDonor(docId) {
+    donor1.doc(docId).delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +43,7 @@ class _HomePageState extends State<HomePage> {
           size: 40,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: StreamBuilder(
         stream: donor1.orderBy('name').snapshots(),
         builder: (context, AsyncSnapshot snapshot) {
@@ -95,14 +100,22 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/update');
+                                Navigator.pushNamed(context, '/update',
+                                    arguments: {
+                                      'name': donorSnap['name'],
+                                      'phone': donorSnap['phone'].toString(),
+                                      'group': donorSnap['group'],
+                                      'id': donorSnap.id,
+                                    });
                               },
                               icon: Icon(Icons.edit),
                               iconSize: 30,
                               color: Colors.blue,
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                DeleteDonor(donorSnap.id);
+                              },
                               icon: Icon(Icons.delete),
                               iconSize: 30,
                               color: Colors.red,

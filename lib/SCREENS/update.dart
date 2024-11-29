@@ -16,9 +16,26 @@ class _UpdateDonorState extends State<UpdateDonor> {
 
   TextEditingController DonorName = TextEditingController();
   TextEditingController DonorNumber = TextEditingController();
+  void UppdateDonor(docId) {
+    final data = {
+      'name': DonorName.text,
+      'phone': DonorNumber.text,
+      'group': selectedGroup,
+    };
+    donor1.doc(docId).update(data);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+            {};
+    DonorName.text = args['name'] ?? '';
+    DonorNumber.text = args['phone'] ?? '';
+    selectedGroup =
+        args['group'] ?? BloodGroups.first; // Default to the first group
+    final docId = args['id'] ?? '';
+
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -53,6 +70,7 @@ class _UpdateDonorState extends State<UpdateDonor> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: DropdownButtonFormField(
+                  value: selectedGroup,
                   decoration:
                       InputDecoration(label: Text("Select Blood Group")),
                   items: BloodGroups.map((e) => DropdownMenuItem(
@@ -60,11 +78,13 @@ class _UpdateDonorState extends State<UpdateDonor> {
                         value: e,
                       )).toList(),
                   onChanged: (val) {
-                    selectedGroup = val;
+                    selectedGroup = val as String?;
                   }),
             ),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  UppdateDonor(docId);
+                },
                 style: ElevatedButton.styleFrom(
                     shape: ContinuousRectangleBorder(),
                     minimumSize: Size(double.infinity, 50),
